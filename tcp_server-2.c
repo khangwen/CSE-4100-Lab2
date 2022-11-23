@@ -13,49 +13,49 @@
 
 int main(int argc, char *argv[])
 {
-  int serv_sock, clnt_sock;
-  char message[BUF_SIZE];
-  int str_len, i;
-  struct sockaddr_in serv_adr;
-  struct sockaddr_in clnt_adr;
-  socklen_t clnt_adr_sz;
+  int serv_sock, clnt_sock;    // default declaration of welcoming socket and client socket
+  char message[BUF_SIZE];      // default declaration of message to be sent
+  int str_len, i;              // default declaration of size of message
+  struct sockaddr_in serv_adr; // create structure for server address
+  struct sockaddr_in clnt_adr; // create structure for client address
+  socklen_t clnt_adr_sz;       // default declaration for client address size
 
-  serv_sock = socket(PF_INET, SOCK_STREAM, 0);
-  memset(&serv_adr, 0, sizeof(serv_adr));
-  serv_adr.sin_family = AF_INET;
-  serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);
-  serv_adr.sin_port = htons(atoi(argv[1]));
-  bind(serv_sock, (struct sockaddr *)&serv_adr, sizeof(serv_adr));
-  listen(serv_sock, 5);
-  clnt_adr_sz = sizeof(clnt_adr);
-  clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_adr, &clnt_adr_sz);
+  serv_sock = socket(PF_INET, SOCK_STREAM, 0);                               // create TCP socket with domain IPv4 and default protocol
+  memset(&serv_adr, 0, sizeof(serv_adr));                                    // fill memory with server address info
+  serv_adr.sin_family = AF_INET;                                             // fill domain info
+  serv_adr.sin_addr.s_addr = htonl(INADDR_ANY);                              // fill server address
+  serv_adr.sin_port = htons(atoi(argv[1]));                                  // fill server port
+  bind(serv_sock, (struct sockaddr *)&serv_adr, sizeof(serv_adr));           // bind welcoming socket to server address
+  listen(serv_sock, 5);                                                      // server put in waiting state until conection with client established
+  clnt_adr_sz = sizeof(clnt_adr);                                            // client address assigned value
+  clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_adr, &clnt_adr_sz); // data packet is accepted
 
-  // Write a code to send a hello message to clinet after the connection is established.
-  char buff[80];
-  int n;
+  // Write a code to send a hello message to client after the connection is established.
+  char buff[80]; // declare buffer message with size 80
+  int n;         // number to check for blank input
 
+  // infinite loop to allow server to send message to client
   for (;;)
   {
-    bzero(buff, 80);
+    bzero(buff, 80); // memory filled with buffer of size 80
 
-    read(clnt_sock, buff, sizeof(buff));
-
-    printf("Client message : %s\t Send to client : ", buff);
-    bzero(buff, 80);
-    n = 0;
-    while ((buff[n++] = getchar()) != '\n')
+    read(clnt_sock, buff, sizeof(buff));                     // server reads message from client
+    printf("Client message : %s\t Send to client : ", buff); // print client message and then request message to be sent to client
+    bzero(buff, 80);                                         // memory filled with buffer of size 80
+    n = 0;                                                   // number set to 0
+    while ((buff[n++] = getchar()) != '\n')                  // copies server message to buffer
       ;
-    write(clnt_sock, buff, sizeof(buff));
+    write(clnt_sock, buff, sizeof(buff)); // buffer message sent to client
 
-    if (strncmp("exit", buff, 4) == 0)
+    if (strncmp("exit", buff, 4) == 0) // exits if the message is "exit"
     {
       printf("Server Exiting...\n");
       break;
     }
   }
 
-  close(clnt_sock);
-  close(serv_sock);
+  close(clnt_sock); // close client socket
+  close(serv_sock); // close welcoming socket
 
   return 0;
 }
