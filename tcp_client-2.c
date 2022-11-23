@@ -25,10 +25,7 @@ int main(){
     
   connect(sock, (struct sockaddr*)&serv_adr, sizeof(serv_adr)) 	
 
-  // Modify the code from here
-  write(sock, message, strlen(message));
-  str_len=read(sock, message, BUF_SIZE-1);
-  // Modify the code till here
+  // Write a code to receive a hello message from server and show the hello on the terminal after the connection is established.
   
   close(sock);
 

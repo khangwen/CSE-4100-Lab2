@@ -28,10 +28,7 @@ int main(){
   clnt_adr_sz=sizeof(clnt_adr);
   clnt_sock=accept(serv_sock, (struct sockaddr*)&clnt_adr, &clnt_adr_sz);
   
-  // Modify the code from here
-  str_len=read(clnt_sock, message, BUF_SIZE)
-  write(clnt_sock, message, str_len);
-  // Modify the code till here
+  // Write a code to send a hello message to clinet after the connection is established.
 
   close(clnt_sock);
   close(serv_sock);
