@@ -41,9 +41,10 @@ int main(int argc, char *argv[])
     n = 0;                                  // number set to 0
     while ((buff[n++] = getchar()) != '\n') // string input stored into buffer, checks for empty string
       ;
-    write(sock, buff, sizeof(buff));     // client sends message to server
-    bzero(buff, sizeof(buff));           // fill memory with buffer
-    read(sock, buff, sizeof(buff));      // client reads message sent back from server
+    write(sock, buff, sizeof(buff)); // client sends message to server
+    bzero(buff, sizeof(buff));       // fill memory with buffer
+    read(sock, buff, sizeof(buff));  // client reads message sent back from server
+    printf("Server Message : %s\t", buff);
     if ((strncmp(buff, "exit", 4)) == 0) // if input is "exit", exit out of loop to close socket
     {
       printf("Exiting...\n");
