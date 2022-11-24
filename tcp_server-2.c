@@ -31,28 +31,11 @@ int main(int argc, char *argv[])
   clnt_sock = accept(serv_sock, (struct sockaddr *)&clnt_adr, &clnt_adr_sz); // data packet is accepted
 
   // Write a code to send a hello message to client after the connection is established.
-  char buff[80]; // declare buffer message with size 80
-  int n;         // number to check for blank input
+  char buff[1024]; // declare buffer message with size 80
+  strncpy(buff, "Hello", 1024);
+  int n; // number to check for blank input
 
-  // infinite loop to allow server to send message to client
-  for (;;)
-  {
-    bzero(buff, 80); // memory filled with buffer of size 80
-
-    read(clnt_sock, buff, sizeof(buff));                     // server reads message from client
-    printf("Client message : %s\t Send to client : ", buff); // print client message and then request message to be sent to client
-    bzero(buff, 80);                                         // memory filled with buffer of size 80
-    n = 0;                                                   // number set to 0
-    while ((buff[n++] = getchar()) != '\n')                  // copies server message to buffer
-      ;
-    write(clnt_sock, buff, sizeof(buff)); // buffer message sent to client
-
-    if (strncmp("exit", buff, 4) == 0) // exits if the message is "exit"
-    {
-      printf("Server Exiting...\n");
-      break;
-    }
-  }
+  write(clnt_sock, buff, sizeof(buff)); // buffer message sent to client
 
   close(clnt_sock); // close client socket
   close(serv_sock); // close welcoming socket

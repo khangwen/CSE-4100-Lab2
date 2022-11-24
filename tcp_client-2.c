@@ -31,25 +31,15 @@ int main(int argc, char *argv[])
 
   // Write a code to receive a hello message from server and show the hello on the terminal after the connection is established.
   char buff[80]; // buffer of size 80 created
-  int n;         // number created for loading buffer
+  int n = 0;     // number created for loading buffer
 
   // infinite loop created to send message to server
   for (;;)
   {
-    bzero(buff, sizeof(buff));              // memory filled with buffer of size 80
-    printf("Enter the message to send : "); // output message to terminal to request string input
-    n = 0;                                  // number set to 0
-    while ((buff[n++] = getchar()) != '\n') // string input stored into buffer, checks for empty string
-      ;
-    write(sock, buff, sizeof(buff)); // client sends message to server
-    bzero(buff, sizeof(buff));       // fill memory with buffer
-    read(sock, buff, sizeof(buff));  // client reads message sent back from server
-    printf("Server Message : %s\t", buff);
-    if ((strncmp(buff, "exit", 4)) == 0) // if input is "exit", exit out of loop to close socket
-    {
-      printf("Exiting...\n");
-      break;
-    }
+    bzero(buff, sizeof(buff));             // memory filled with buffer of size 80
+    read(sock, buff, sizeof(buff));        // client reads message sent back from server
+    printf("Server Message : %s\t", buff); // print message to client terminal
+    break;
   }
 
   close(sock); // client socket closed
